@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goserver
+  labels:
+    app: goserver
+spec:
+  selector:
+    matchLabels:
+      app: goserver
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: "goserver"
+    spec:
+      containers:
+        - name: goservercont
+          image: malvfr/hello-go:v5
+          envFrom:
+            - configMapRef:
+                name: goserver-cfg-map
+          volumeMounts:
+            - mountPath: "/go/cats"
+              name: config
+      volumes:
+        - name: config
+          configMap:
+            name: configmap-goserver-cats
+            items:
+              - key: members
+                path: "cats.txt"
