@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: goservercont
-          image: malvfr/hello-go:v5.2
+          image: malvfr/hello-go:v5.3
           livenessProbe:
             httpGet:
               path: /healthz
@@ -25,6 +25,15 @@ spec:
             timeoutSeconds: 5
             failureThreshold: 3
             successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 8000
+            periodSeconds: 5
+            timeoutSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+            initialDelaySeconds: 5
           envFrom:
             - secretRef:
                 name: goserver-secret
