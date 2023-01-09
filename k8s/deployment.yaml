@@ -16,10 +16,20 @@ spec:
     spec:
       containers:
         - name: goservercont
-          image: malvfr/hello-go:v5
+          image: malvfr/hello-go:v5.2
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            periodSeconds: 5
+            timeoutSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
           envFrom:
-            - configMapRef:
-                name: goserver-cfg-map
+            - secretRef:
+                name: goserver-secret
+            # - configMapRef:
+            #     name: goserver-cfg-map
           volumeMounts:
             - mountPath: "/go/cats"
               name: config
