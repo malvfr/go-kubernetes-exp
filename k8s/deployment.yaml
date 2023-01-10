@@ -17,23 +17,39 @@ spec:
       containers:
         - name: goservercont
           image: malvfr/hello-go:v5.3
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: 8000
-            periodSeconds: 5
-            timeoutSeconds: 5
-            failureThreshold: 3
-            successThreshold: 1
-          readinessProbe:
-            httpGet:
-              path: /readiness
-              port: 8000
-            periodSeconds: 5
-            timeoutSeconds: 5
-            failureThreshold: 3
-            successThreshold: 1
-            initialDelaySeconds: 5
+          resources:
+            requests:
+              cpu: "0.3"
+              memory: 20Mi
+            limits:
+              cpu: "0.3"
+              memory: 100Mi
+          # livenessProbe:
+          #   httpGet:
+          #     path: /healthz
+          #     port: 8000
+          #   periodSeconds: 5
+          #   timeoutSeconds: 5
+          #   failureThreshold: 3
+          #   successThreshold: 1
+          # startupProbe:
+          #   httpGet:
+          #     path: /healthz
+          #     port: 8000
+          #   periodSeconds: 5
+          #   timeoutSeconds: 5
+          #   failureThreshold: 3
+          #   successThreshold: 1
+          #   initialDelaySeconds: 5
+          # readinessProbe:
+          #   httpGet:
+          #     path: /readiness
+          #     port: 8000
+          #   periodSeconds: 5
+          #   timeoutSeconds: 5
+          #   failureThreshold: 3
+          #   successThreshold: 1
+          #   initialDelaySeconds: 5
           envFrom:
             - secretRef:
                 name: goserver-secret
